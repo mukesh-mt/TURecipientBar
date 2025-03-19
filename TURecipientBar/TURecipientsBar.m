@@ -461,6 +461,11 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 	[self addSubview:_textField];
 	[_textField addObserver:self forKeyPath:@"selectedTextRange" options:0 context:TURecipientsSelectionContext];
 	
+	_placeholderLabel = [[UILabel alloc] init];
+	_placeholderLabel.backgroundColor = [UIColor clearColor];
+	_placeholderLabel.font = [UIFont systemFontOfSize:15.0];
+	_placeholderLabel.textColor = [UIColor lightGrayColor];
+	[self addSubview:_placeholderLabel];
 	
 	_summaryLabel = [[UILabel alloc] init];
 	_summaryLabel.backgroundColor = [UIColor clearColor];
@@ -533,11 +538,7 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 		recipientViewFrame.size = [recipientView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
 	}
 	
-	if (lastView == _searchImageView) {
-		recipientViewFrame.origin.x = CGRectGetMaxX(lastView.frame);
-	} else {
-		recipientViewFrame.origin.x = CGRectGetMaxX(lastView.frame) + 6.0;
-	}
+	recipientViewFrame.origin.x = CGRectGetMaxX(lastView.frame) + 8.0;
 	
 	recipientViewFrame.origin.y = CGRectGetMidY(lastView.frame) - recipientViewFrame.size.height / 2.0;
 	
@@ -560,7 +561,7 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 	
 	if (_needsRecipientLayout) {
 		CGSize toSize = _searchImageView.intrinsicContentSize;
-		_searchImageView.frame = CGRectMake(bounds.origin.x + 15.0,
+		_searchImageView.frame = CGRectMake(bounds.origin.x + 12.0,
 									21.0 - toSize.height / 2,
 									toSize.width, toSize.height);
 		
@@ -625,6 +626,9 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 	} else {
 		self.scrollEnabled = NO;
 	}
+	
+	[_placeholderLabel setHidden: self.text.length > 0 || self.recipients.count > 0];
+	_placeholderLabel.frame = _textField.frame;
 }
 
 - (void)_frameChanged

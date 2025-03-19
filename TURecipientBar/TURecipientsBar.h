@@ -95,6 +95,8 @@ typedef NS_ENUM(NSInteger, TURecipientsBarDisplayMode) {
 
 @property (nonatomic, readonly, nonnull) UILabel *summaryLabel;
 
+@property (nonatomic, readonly, nonnull) UILabel *placeholderLabel;
+
 /** The label in front of both the search field and tokens.
  
  The default text is "To: ". You can set the text to nil to disable the label entirely.

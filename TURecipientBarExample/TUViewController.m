@@ -28,9 +28,11 @@
     
     // we don't want our initial state to animate in
     self.recipientsBar.animatedRecipientsInAndOut = NO;
+    self.recipientsBar.displayMode = TURecipientsBarDisplayModeExpanded;
     
     self.recipientsBar.showsAddButton = NO;
-    self.recipientsBar.placeholder = NSLocalizedString(@"Type names...", nil);
+    self.recipientsBar.placeholderLabel.attributedText = [[NSAttributedString alloc] initWithString: @"Long place Type names..." attributes: @{NSForegroundColorAttributeName: [UIColor redColor]}];
+//    self.recipientsBar.placeholder = NSLocalizedString(@"Type names...", nil);
 //    self.recipientsBar.label = @"Send To: ";
 //    self.recipientsBar.label = @"";
     
