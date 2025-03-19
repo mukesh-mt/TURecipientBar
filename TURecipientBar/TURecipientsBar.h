@@ -42,16 +42,6 @@ typedef NS_ENUM(NSInteger, TURecipientsBarDisplayMode) {
  */
 @property (nonatomic, copy, nullable) NSString *text;
 
-/** The text for the label in front of both the search field and tokens.
- 
- The default value is "To: ".
- 
- You can set this to nil to disable the label entirely.
- 
- Use `toLabel` instead.
- */
-@property (nonatomic, copy, nullable) NSString *label __attribute__((deprecated));
-
 /** The string that is displayed when there is no other text in the search field.
  
  The default value is nil.
@@ -109,7 +99,7 @@ typedef NS_ENUM(NSInteger, TURecipientsBarDisplayMode) {
  
  The default text is "To: ". You can set the text to nil to disable the label entirely.
  */
-@property (nonatomic, readonly, nonnull) UILabel *toLabel;
+@property (nonatomic, readonly, nonnull) UIImageView *searchImageView;
 
 /** Whether the add button should appear.
  

@@ -29,8 +29,8 @@
     // we don't want our initial state to animate in
     self.recipientsBar.animatedRecipientsInAndOut = NO;
     
-//    self.recipientsBar.showsAddButton = NO;
-//    self.recipientsBar.placeholder = NSLocalizedString(@"Type names...", nil);
+    self.recipientsBar.showsAddButton = NO;
+    self.recipientsBar.placeholder = NSLocalizedString(@"Type names...", nil);
 //    self.recipientsBar.label = @"Send To: ";
 //    self.recipientsBar.label = @"";
     
@@ -114,19 +114,15 @@
  }
  */
 
-/*
+
 // Uncomment to customize the recipient view.
 - (nullable UIControl *)recipientsBar:(nonnull TURecipientsBar *)recipientsBar viewForRecipient:(nonnull id<TURecipient>)recipient
 {
 	ChipView *view = [[ChipView alloc] init];
-	
 	view.nameLabel.text = recipient.recipientTitle;
-	
 	[view.removeButton addTarget:self action:@selector(remove) forControlEvents:UIControlEventTouchUpInside];
-	
 	return view;
 }
- */
 
 - (void)remove {
 	[self.recipientsBar removeRecipient:self.recipientsBar.recipients.lastObject];

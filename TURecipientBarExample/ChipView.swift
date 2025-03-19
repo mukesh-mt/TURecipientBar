@@ -7,16 +7,18 @@
 //
 
 import UIKit
+import TURecipientBar
 
 
 /// A Material UI style chip/token
 ///
 /// See https://material.io/guidelines/components/chips.html#chips-contact-chips.
 @available(iOS 9.0, *)
-class ChipView : UIButton {
-	let avatarView = UIImageView()
-	let nameLabel = UILabel()
-	let removeButton = UIButton(type: .custom)
+@objcMembers class ChipView : UIControl {
+	public let avatarView = UIImageView()
+	public let nameLabel = UILabel()
+	public let removeButton = UIButton(type: .custom)
+    var recipient: TURecipient?
 	
 	override init(frame: CGRect = .zero) {
 		super.init(frame: frame)
@@ -28,6 +30,7 @@ class ChipView : UIButton {
 		avatarView.translatesAutoresizingMaskIntoConstraints = false
 		self.addSubview(avatarView)
 		
+        nameLabel.numberOfLines = 0
 		nameLabel.isUserInteractionEnabled = false
 		nameLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
 		nameLabel.translatesAutoresizingMaskIntoConstraints = false

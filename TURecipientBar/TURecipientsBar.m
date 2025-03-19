@@ -300,16 +300,6 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 	return [[_textField text] stringByReplacingOccurrencesOfString:TURecipientsPlaceholder withString:@""];
 }
 
-- (void)setLabel:(NSString *)label
-{
-	_toLabel.attributedText = [[NSAttributedString alloc] initWithString:label ?: @"" attributes:self.labelTextAttributes];
-}
-
-- (NSString *)label
-{
-	return [_toLabel text];
-}
-
 - (void)setHeightConstraint:(NSLayoutConstraint *)heightConstraint
 {
 	if (_heightConstraint != heightConstraint) {
@@ -450,9 +440,8 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 	_lineView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.3];
 	[self addSubview:_lineView];
 	
-	_toLabel = [[UILabel alloc] init];
-	self.toLabel.text = NSLocalizedString(@"To: ", nil);
-	[self addSubview:_toLabel];
+	_searchImageView = [[UIImageView alloc] initWithImage:[UIImage systemImageNamed:@"magnifyingglass"]];
+	[self addSubview:_searchImageView];
 	
 	_addButton = [UIButton buttonWithType:UIButtonTypeContactAdd];
 	_addButton.alpha = 0.0;
@@ -544,7 +533,7 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 		recipientViewFrame.size = [recipientView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
 	}
 	
-	if (lastView == _toLabel) {
+	if (lastView == _searchImageView) {
 		recipientViewFrame.origin.x = CGRectGetMaxX(lastView.frame);
 	} else {
 		recipientViewFrame.origin.x = CGRectGetMaxX(lastView.frame) + 6.0;
@@ -555,6 +544,7 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 	if (CGRectGetMaxX(recipientViewFrame) > [self _safeBounds].size.width - 6.0) {
 		recipientViewFrame.origin.x = CGRectGetMinX([self _safeBounds]) + 15.0;
 		recipientViewFrame.origin.y += TURecipientsLineHeight - 4.0;
+		recipientViewFrame.size.width = MIN([self _safeBounds].size.width - recipientViewFrame.origin.x - 12.0, recipientViewFrame.size.width);
 	}
 	
 	return recipientViewFrame;
@@ -569,14 +559,14 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 	CGRect bounds = [self _safeBounds];
 	
 	if (_needsRecipientLayout) {
-		CGSize toSize = _toLabel.intrinsicContentSize;
-		_toLabel.frame = CGRectMake(bounds.origin.x + 15.0,
+		CGSize toSize = _searchImageView.intrinsicContentSize;
+		_searchImageView.frame = CGRectMake(bounds.origin.x + 15.0,
 									21.0 - toSize.height / 2,
 									toSize.width, toSize.height);
 		
 		
 		CGRect summaryLabelFrame;
-		summaryLabelFrame.origin.x = CGRectGetMaxX(_toLabel.frame);
+		summaryLabelFrame.origin.x = CGRectGetMaxX(_searchImageView.frame);
 		summaryLabelFrame.size.height = ceil(_summaryLabel.font.lineHeight);
 		summaryLabelFrame.origin.y = 21.0 - summaryLabelFrame.size.height / 2;
 		summaryLabelFrame.size.width = bounds.size.width - summaryLabelFrame.origin.x - 12.0;
@@ -586,7 +576,7 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 		addButtonFrame.size = _addButton.intrinsicContentSize;
 		addButtonFrame.origin.x = bounds.size.width - addButtonFrame.size.width - 6.0;
 		
-		UIView *lastView = _toLabel;
+		UIView *lastView = _searchImageView;
 		
 		for (UIControl *recipientView in [_recipientViews arrayByAddingObject:_textField]) {
 			CGRect recipientViewFrame = [self _frameFoRecipientView:recipientView afterView:lastView];
@@ -1074,15 +1064,6 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 	_placeholderTextAttributes = [attributes copy];
 	
 	[self _updateSummary];
-}
-
-- (void)setLabelTextAttributes:(NSDictionary *)attributes
-{
-	_labelTextAttributes = attributes;
-	
-	NSString *text = _toLabel.text;
-	NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:text attributes:_labelTextAttributes];
-	_toLabel.attributedText = attributedText;
 }
 
 - (NSDictionary *)labelTextAttributes
