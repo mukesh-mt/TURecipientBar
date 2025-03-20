@@ -13,7 +13,7 @@
 #import "TURecipientButton.h"
 
 
-#define TURecipientsLineHeight 40.0
+#define TURecipientsLineHeight 36.0
 #define TURecipientsPlaceholder @"\u200B"
 
 void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
@@ -570,14 +570,14 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 	if (_needsRecipientLayout) {
 		CGSize toSize = _searchImageView.intrinsicContentSize;
 		_searchImageView.frame = CGRectMake(bounds.origin.x + 12.0,
-									21.0 - toSize.height / 2,
-									toSize.width, toSize.height);
+											(TURecipientsLineHeight - toSize.height) / 2,
+											toSize.width, toSize.height);
 		
 		
 		CGRect summaryLabelFrame;
 		summaryLabelFrame.origin.x = CGRectGetMaxX(_searchImageView.frame);
 		summaryLabelFrame.size.height = ceil(_summaryLabel.font.lineHeight);
-		summaryLabelFrame.origin.y = 21.0 - summaryLabelFrame.size.height / 2;
+		summaryLabelFrame.origin.y = (TURecipientsLineHeight - summaryLabelFrame.size.height) / 2;
 		summaryLabelFrame.size.width = bounds.size.width - summaryLabelFrame.origin.x - 12.0;
 		_summaryLabel.frame = summaryLabelFrame;
 		
@@ -674,6 +674,10 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 	[self _frameChanged];
 }
 
+- (void)tintColorDidChange
+{
+	[super tintColorDidChange];
+}
 
 #pragma mark - Actions
 
@@ -864,7 +868,7 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-	[self setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
+//	[self setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
 	
 	[self setSelectedRecipient:nil];
 	
