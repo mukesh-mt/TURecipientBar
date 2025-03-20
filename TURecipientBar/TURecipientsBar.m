@@ -156,6 +156,7 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 
 - (void)removeAllRecipient {
 	[_recipients removeAllObjects];
+	[_recipientViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
 	[_recipientViews removeAllObjects];
 	[self _setNeedsRecipientLayout];
 	[self _updateSummary];
@@ -671,23 +672,6 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 	[super setFrame:frame];
 	
 	[self _frameChanged];
-}
-
-- (void)tintColorDidChange
-{
-	[super tintColorDidChange];
-	
-	UIControlState state = UIControlStateNormal;
-	NSDictionary *attributes = [self recipientTitleTextAttributesForState:state];
-	for (TURecipientButton *button in _recipientViews) {
-		if ([button isKindOfClass:[TURecipientButton class]]) {
-			continue;
-		}
-		
-		NSString *text = [button titleForState:state] ?: [button attributedTitleForState:state].string ?: @"";
-		NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:text attributes:attributes];
-		[button setAttributedTitle:attributedText forState:state];
-	}
 }
 
 
