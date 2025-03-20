@@ -13,7 +13,7 @@
 #import "TURecipientButton.h"
 
 
-#define TURecipientsLineHeight 40.0
+#define TURecipientsLineHeight 36.0
 #define TURecipientsPlaceholder @"\u200B"
 
 void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
@@ -674,6 +674,10 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 	[self _frameChanged];
 }
 
+- (void)tintColorDidChange
+{
+	[super tintColorDidChange];
+}
 
 #pragma mark - Actions
 
@@ -864,7 +868,7 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-	[self setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
+//	[self setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
 	
 	[self setSelectedRecipient:nil];
 	
