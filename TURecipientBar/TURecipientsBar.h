@@ -178,6 +178,7 @@ typedef NS_ENUM(NSInteger, TURecipientsBarDisplayMode) {
  @param recipient A recipient to remove.
  */
 - (void)removeRecipient:(nonnull id<TURecipient>)recipient;
+- (void)removeAllRecipient;
 
 /** The currently selected recipient.
  

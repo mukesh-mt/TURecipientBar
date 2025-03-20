@@ -13,7 +13,7 @@
 #import "TURecipientButton.h"
 
 
-#define TURecipientsLineHeight 44.0
+#define TURecipientsLineHeight 40.0
 #define TURecipientsPlaceholder @"\u200B"
 
 void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
@@ -151,6 +151,13 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 	if ([self.recipientsBarDelegate respondsToSelector:@selector(recipientsBar:didAddRecipient:)]) {
 		[self.recipientsBarDelegate recipientsBar:self didAddRecipient:recipient];
 	}
+	[self _updateSummary];
+}
+
+- (void)removeAllRecipient {
+	[_recipients removeAllObjects];
+	[_recipientViews removeAllObjects];
+	[self _setNeedsRecipientLayout];
 	[self _updateSummary];
 }
 
@@ -487,7 +494,7 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 		if (CGRectEqualToRect(self.frame, CGRectZero)) {
 			// often because of autolayout we will be initialized with a zero rect
 			// we need to have a default size that we can layout against
-			self.frame = CGRectMake(0.0, 0.0, 320.0, 44.0);
+			self.frame = CGRectMake(0.0, 0.0, 320.0, 40.0);
 		}
 		
 		[self _init];
@@ -500,7 +507,7 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 	if (CGRectEqualToRect(frame, CGRectZero)) {
 		// often because of autolayout we will be initialized with a zero rect
 		// we need to have a default size that we can layout against
-		frame = CGRectMake(0.0, 0.0, 320.0, 44.0);
+		frame = CGRectMake(0.0, 0.0, 320.0, 40.0);
 	}
 	
 	self = [super initWithFrame:frame];
@@ -533,7 +540,7 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 {
 	CGRect recipientViewFrame;
 	if (recipientView == _textField) {
-		recipientViewFrame.size = CGSizeMake(100.0, 43.0);
+		recipientViewFrame.size = CGSizeMake(100.0, 40.0);
 	} else {
 		recipientViewFrame.size = [recipientView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
 	}
@@ -543,7 +550,7 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 	recipientViewFrame.origin.y = CGRectGetMidY(lastView.frame) - recipientViewFrame.size.height / 2.0;
 	
 	if (CGRectGetMaxX(recipientViewFrame) > [self _safeBounds].size.width - 6.0) {
-		recipientViewFrame.origin.x = CGRectGetMinX([self _safeBounds]) + 15.0;
+		recipientViewFrame.origin.x = CGRectGetMinX([self _safeBounds]) + 8.0;
 		recipientViewFrame.origin.y += TURecipientsLineHeight - 4.0;
 		recipientViewFrame.size.width = MIN([self _safeBounds].size.width - recipientViewFrame.origin.x - 12.0, recipientViewFrame.size.width);
 	}
@@ -823,6 +830,7 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 }
 
 - (void)textFieldEditingChanged:(UITextField *)textField {
+	[_placeholderLabel setHidden: self.recipients.count > 0 || self.text.length > 0];
 	if ([self.recipientsBarDelegate respondsToSelector:@selector(recipientsBar:textDidChange:)]) {
 		[self.recipientsBarDelegate recipientsBar:self textDidChange:self.text];
 	}
